@@ -27,7 +27,22 @@ day_df.drop_duplicates(inplace=True)
 hour_df.dropna(inplace=True)
 hour_df.drop_duplicates(inplace=True)
 
-# Menampilkan visualisasi Outliers
+# --- Analisis dan visualisasi untuk pertanyaan 1 ---
+st.subheader("Pertanyaan 1: Bagaimana distribusi total penyewaan sepeda per jam?")
+# Menampilkan distribusi total rental sepeda
+fig_hist, ax_hist = plt.subplots(figsize=(10, 6))
+sns.histplot(day_df['cnt'], kde=True, ax=ax_hist)
+ax_hist.set_title('Distribusi Total Penyewaan Sepeda per Jam')
+ax_hist.set_xlabel('Total Rentals')
+st.pyplot(fig_hist)
+
+st.write("""
+Distribusi total penyewaan sepeda ini menggambarkan jumlah penyewaan sepeda pada rentang waktu harian. 
+Histogram ini menunjukkan pola umum dari penyewaan, yang dapat memberikan wawasan tentang distribusi penyewaan di berbagai jam sepanjang hari.
+""")
+# --- Selesai analisis dan visualisasi untuk pertanyaan 1 ---
+
+# Visualisasi Outliers
 st.subheader("Visualisasi Outliers")
 fig_outliers, ax_outliers = plt.subplots(figsize=(10, 6))
 sns.boxplot(data=day_df[['temp', 'atemp', 'hum', 'windspeed']], ax=ax_outliers)
@@ -48,23 +63,9 @@ day_df_clean = day_df[mask.all(axis=1)]
 st.subheader("Ringkasan Statistik dari Data yang Sudah Dibersihkan")
 st.write(day_df_clean.describe())
 
-# Visualisasi distribusi total rental sepeda
-st.subheader("Distribusi Total Penyewaan Sepeda per Jam")
-fig_hist, ax_hist = plt.subplots(figsize=(10, 6))
-sns.histplot(day_df_clean['cnt'], kde=True, ax=ax_hist)
-ax_hist.set_title('Total Distribusi Rental Sepeda')
-ax_hist.set_xlabel('Total Rentals')
-st.pyplot(fig_hist)
-
-st.write("""
-Grafik histogram ini menunjukkan distribusi total penyewaan sepeda per jam, 
-dengan sumbu horizontal menampilkan jumlah total penyewaan dan 
-sumbu vertikal menunjukkan frekuensinya. Grafik juga dilengkapi 
-dengan garis KDE untuk memperlihatkan pola distribusi yang lebih halus. 
-""")
-
+# --- Analisis dan visualisasi untuk pertanyaan 2 ---
+st.subheader("Pertanyaan 2: Apa saja faktor-faktor yang memengaruhi penyewaan sepeda?")
 # Analisis hubungan antara cuaca dan penyewaan sepeda
-st.subheader("Analisis Hubungan Cuaca dan Penyewaan Sepeda")
 fig_weather, ax_weather = plt.subplots(figsize=(10, 6))
 sns.scatterplot(x=day_df_clean['temp'], y=day_df_clean['cnt'], ax=ax_weather)
 ax_weather.set_title('Hubungan Suhu dengan Penyewaan Sepeda')
@@ -73,10 +74,11 @@ ax_weather.set_ylabel('Total Rentals')
 st.pyplot(fig_weather)
 
 st.write("""
-Grafik scatterplot ini menunjukkan hubungan antara suhu dan jumlah penyewaan sepeda. 
-Semakin tinggi suhu, penyewaan sepeda cenderung meningkat, meskipun ada batas tertentu 
-di mana suhu yang terlalu tinggi dapat menurunkan tingkat penyewaan.
+Suhu merupakan salah satu faktor yang mempengaruhi jumlah penyewaan sepeda. 
+Dari scatterplot di atas, kita bisa melihat hubungan positif antara suhu dan penyewaan sepeda. 
+Namun, suhu yang terlalu tinggi mungkin dapat menurunkan minat dalam menyewa sepeda.
 """)
+# --- Selesai analisis dan visualisasi untuk pertanyaan 2 ---
 
 # Visualisasi penyewaan sepeda berdasarkan hari dalam seminggu
 st.subheader("Penyewaan Sepeda Berdasarkan Hari dalam Seminggu")
@@ -88,8 +90,7 @@ ax_day_of_week.set_ylabel('Total Rentals')
 st.pyplot(fig_day_of_week)
 
 st.write("""
-Grafik bar ini menunjukkan jumlah penyewaan sepeda berdasarkan hari dalam seminggu. 
-Data menunjukkan bahwa penyewaan sepeda cenderung lebih tinggi pada akhir pekan.
+Jumlah penyewaan sepeda cenderung meningkat pada akhir pekan dibandingkan hari kerja.
 """)
 
 # Menampilkan analisis waktu penyewaan sepeda berdasarkan jam
@@ -102,8 +103,7 @@ ax_hourly.set_ylabel('Total Rentals')
 st.pyplot(fig_hourly)
 
 st.write("""
-Grafik lineplot ini menunjukkan pola penyewaan sepeda sepanjang hari. 
-Penyewaan cenderung lebih tinggi pada jam sibuk, yaitu pagi hari saat berangkat kerja dan sore hari saat pulang kerja.
+Penyewaan sepeda meningkat pada jam-jam sibuk, seperti pagi hari (saat orang berangkat bekerja) dan sore hari (saat orang pulang bekerja).
 """)
 
 # Ringkasan Akhir
